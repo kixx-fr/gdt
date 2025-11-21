@@ -354,7 +354,30 @@ BRANDS.forEach((b,i)=>{
   btn.addEventListener('click', ()=>{ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active')); btn.classList.add('active'); renderBrand(b); });
   controls.appendChild(btn);
 });
-renderBrand(BRANDS[0]);
+controls.appendChild(btn);
+});
+
+// === ECOUTEUR D'URL (MODE CHIRURGICAL) ===
+(function(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const target = urlParams.get('marque');
+    let foundBrand = BRANDS[0]; // Par défaut Nike
+
+    if(target) {
+        // Recherche insensible à la casse (ex: "361" trouve "361°")
+        const match = BRANDS.find(b => b.toLowerCase().includes(target.toLowerCase()) || target.toLowerCase().includes(b.toLowerCase()));
+        if(match) foundBrand = match;
+    }
+
+    // Active visuellement le bon bouton
+    document.querySelectorAll('.tab').forEach(b => {
+        if(b.textContent === foundBrand) b.classList.add('active');
+        else b.classList.remove('active');
+    });
+
+    renderBrand(foundBrand);
+})();
 </script>
 </body>
+
 </html>
